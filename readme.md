@@ -8,6 +8,17 @@ Node library that allows using the [Git credential API](http://git-scm.com/docs/
 npm install --save git-credential-node
 ```
 
+## How it works
+
+This is a thin wrapper around the `git credential` command.
+
+The library use the GIT_TERMINAL_PROMPT environment variable to
+avoid asking the user credential on stdin.
+
+The option is avalable starting with git 2.3, so you must have this version of git intalled on your system (or a newer one).
+
+See [detail on the option here](https://github.com/blog/1957-git-2-3-has-been-released)
+
 ## Usage
 
 The library provides the following functions that can be used to interact with a locally installed Git credential tool.
