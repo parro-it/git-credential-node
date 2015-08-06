@@ -1,0 +1,36 @@
+{
+  "name": "git-switch",
+  "description": "switch git credentials within your accounts",
+  "repository": "https://github.com/parro-it/git-switch.git",
+  "version": "1.0.0",
+  "license": "MIT - © 2015 Andrea Parodi",
+  "main": "dist/index.js",
+  "dependencies": {},
+  "author": "andrea@parro.it",
+  "scripts": {
+    "test": "mocha test/*_test.js test/**/*_test.js --require ./test/init || echo failed",
+    "build": "babel index.js --out-file dist/index.js",
+    "lint": "eslint *.js"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-airbnb",
+    "plugins": [
+      "babel"
+    ]
+  },
+  "babel": {
+    "stage": 0
+  },
+  "devDependencies": {
+    "babel": "^5.1.11",
+    "chai": "^2.2.0",
+    "co": "^4.5.2",
+    "co-mocha": "^1.1.0",
+    "mocha": "^2.2.4",
+    "eslint": "^0.24.1",
+    "eslint-config-airbnb": "0.0.6",
+    "eslint-plugin-babel": "^1.2.0",
+    "babel-eslint": "^4.0.5"
+
+  }
+}
