@@ -269,6 +269,13 @@ function example() {
 });
 ```
 
+
+## Credits
+
+I took inspiration and documentation from
+[git-credential-helper](https://github.com/nwinkler/git-credential-helper)
+[nwinkler](https://github.com/nwinkler) by
+
 ## License
 
 MIT - © 2015 Andrea Parodi
