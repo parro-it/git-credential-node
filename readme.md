@@ -45,7 +45,7 @@ When there aren't any stored credentials for the requested target server, the Gi
 Example:
 
 ```javascript
-import fill from 'git-credential-node';
+import { fill } from 'git-credential-node';
 fill('http://foo/bar.git', (err, data) => {
   if (err) {
     return console.log(err.message);
@@ -72,7 +72,7 @@ The provided `callback` is called with one parameters:
 Example:
 
 ```javascript
-import approve from 'git-credential-node';
+import { approve } from 'git-credential-node';
 const opts = {
   username: 'user',
   password: 'pass',
@@ -103,9 +103,165 @@ The provided `callback` is called with one parameters:
 Example:
 
 ```javascript
-import reject from 'git-credential-node';
+import { reject } from 'git-credential-node';
 reject('http://foo/bar.git', err => {
   if (err) {
+    return console.log(err.message);
+  }
+
+  console.log('credentials removed!');
+});
+```
+
+
+## Promises usage
+
+Example of use of the async functions with promise.
+
+All functions resolve or reject the returned promise with the same arguments passed
+to the callback.
+We use es2016 proposed async function in these example for clarity, but this is obviously
+not required.
+Any other comment specified in the callback section apply also to the promise usage.
+
+### fill(url)
+
+Example:
+
+```javascript
+import { fill } from 'git-credential-node';
+
+async function example() {
+  try {
+
+    const data = await fill('http://foo/bar.git');
+
+    if (!data) {
+      console.log('credentials not stored!');
+    }
+    return data;
+
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+```
+
+### approve(options)
+
+Example:
+
+```javascript
+import { approve } from 'git-credential-node';
+
+async function example() {
+  const opts = {
+    username: 'user',
+    password: 'pass',
+    url: 'http://foo/bar.git'
+  };
+
+  try {
+    await approve(opts);
+
+  } catch (err) {
+    return console.log(err.message);
+  }
+
+  console.log('credentials stored!');
+});
+```
+
+### reject(url, callback)
+
+Example:
+
+```javascript
+import { reject } from 'git-credential-node';
+
+async function example() {
+  try {
+    await reject('http://foo/bar.git');
+
+  } catch (err) {
+    return console.log(err.message);
+  }
+
+  console.log('credentials removed!');
+});
+```
+
+
+
+## Sync usage
+
+Example of use of the sync functions.
+
+All functions hasve a synchronous counterpart, with name ending in `Sync`.
+These can be particulary useful to use within bin scripts.
+
+Any other comment specified in the callback section apply also to the sync functions.
+
+### fillSync(url)
+
+Example:
+
+```javascript
+import { fillSync } from 'git-credential-node';
+
+function example() {
+  try {
+
+    const data = fillSync('http://foo/bar.git');
+
+    if (!data) {
+      console.log('credentials not stored!');
+    }
+    return data;
+
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+```
+
+### Sync(options)
+
+Example:
+
+```javascript
+import { Sync } from 'git-credential-node';
+
+function example() {
+  const opts = {
+    username: 'user',
+    password: 'pass',
+    url: 'http://foo/bar.git'
+  };
+
+  try {
+    Sync(opts);
+
+  } catch (err) {
+    return console.log(err.message);
+  }
+
+  console.log('credentials stored!');
+});
+```
+
+### rejectSync(url, callback)
+
+Example:
+
+```javascript
+import { rejectSync } from 'git-credential-node';
+
+function example() {
+  try {
+    rejectSync('http://foo/bar.git');
+
+  } catch (err) {
     return console.log(err.message);
   }
 
