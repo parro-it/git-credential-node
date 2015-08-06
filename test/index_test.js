@@ -1,5 +1,11 @@
-import { fill, approve, reject } from '../index';
-import { fillSync, approveSync, rejectSync } from '../index';
+let moduleRoot = '../es6';
+if (process.env.TEST_RELEASE) {
+  moduleRoot = '../dist';
+}
+
+const { fill, approve, reject } = require(moduleRoot);
+const { fillSync, approveSync, rejectSync } = require(moduleRoot);
+
 import thenify from 'thenify';
 
 const testWith = ({ _fill, _approve, _reject }) => () => {

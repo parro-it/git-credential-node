@@ -3,14 +3,19 @@
   "description": "switch git credentials within your accounts",
   "repository": "https://github.com/parro-it/git-credential-node.git",
   "version": "1.0.0",
-  "license": "MIT - © 2015 Andrea Parodi",
+  "license": "MIT",
   "main": "dist/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "babel-runtime": "^5.8.20"
+  },
   "author": "andrea@parro.it",
   "scripts": {
-    "test": "mocha test/*_test.js test/**/*_test.js --require ./test/init || echo failed",
-    "build": "babel index.js --out-file dist/index.js",
-    "lint": "eslint *.js"
+    "test": "mocha test/*_test.js test/**/*_test.js --require ./test/_init || echo failed",
+    "test-release": "export TEST_RELEASE=1 && mocha dist_test/*_test.js dist_test/**/*_test.js --require ./dist_test/_init-release",
+    "build": "babel es6 --out-dir dist",
+    "build-test": "babel test --out-dir dist_test",
+    "lint": "eslint es6/*.js test/*.js",
+    "check": "npm run lint && npm run build && npm run build-test && npm run test-release"
   },
   "eslintConfig": {
     "extends": "eslint-config-airbnb",
@@ -19,7 +24,10 @@
     ]
   },
   "babel": {
-    "stage": 0
+    "stage": 0,
+    "optional": [
+      "runtime"
+    ]
   },
   "devDependencies": {
     "babel": "^5.1.11",
