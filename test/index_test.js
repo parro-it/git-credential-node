@@ -1,16 +1,13 @@
-'use strict';
-
-import git-switch from '..';
+import gsw from '../index';
 
 describe('git-switch', () => {
+  it('is defined', () => {
+    gsw.should.be.a('function');
+  });
 
-    it('is defined', () => {
-        git-switch.should.be.a('function');
-    });
-
-    it('support async', function *() {
-        const result = yield Promise.resolve(git-switch());
-        result.should.be.equal(42);
-    });
-
+  it('support async', async () => {
+    const result = await Promise.resolve(gsw());
+    console.log(result)
+    result.should.be.equal(42);
+  });
 });

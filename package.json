@@ -5,7 +5,10 @@
   "version": "1.0.0",
   "license": "MIT - © 2015 Andrea Parodi",
   "main": "dist/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "git-credential": "^1.0.1",
+    "git-credential-helper": "0.0.1"
+  },
   "author": "andrea@parro.it",
   "scripts": {
     "test": "mocha test/*_test.js test/**/*_test.js --require ./test/init || echo failed",
@@ -31,6 +34,5 @@
     "eslint-config-airbnb": "0.0.6",
     "eslint-plugin-babel": "^1.2.0",
     "babel-eslint": "^4.0.5"
-
   }
 }
