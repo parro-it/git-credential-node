@@ -1,13 +1,11 @@
 {
-  "name": "git-switch",
+  "name": "git-credential-node",
   "description": "switch git credentials within your accounts",
-  "repository": "https://github.com/parro-it/git-switch.git",
+  "repository": "https://github.com/parro-it/git-credential-node.git",
   "version": "1.0.0",
   "license": "MIT - © 2015 Andrea Parodi",
   "main": "dist/index.js",
-  "dependencies": {
-    "git-credential-helper": "0.0.1"
-  },
+  "dependencies": {},
   "author": "andrea@parro.it",
   "scripts": {
     "test": "mocha test/*_test.js test/**/*_test.js --require ./test/init || echo failed",
