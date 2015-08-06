@@ -7,7 +7,7 @@ describe('git-switch', () => {
 
   it('support async', async () => {
     const result = await Promise.resolve(gsw());
-    console.log(result)
+    console.dir(result)
     result.should.be.equal(42);
   });
 });
