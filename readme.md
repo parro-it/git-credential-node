@@ -3,6 +3,11 @@
 > Thin wrapper around `git credential` command
 > Allow you to use [Git credential API](http://git-scm.com/docs/git-credential) from node.
 
+[![Travis Build Status](https://img.shields.io/travis/parro-it/git-credential-node.svg)](http://travis-ci.org/parro-it/git-credential-node)
+[![NPM module](https://img.shields.io/npm/v/git-credential-node.svg)](https://npmjs.org/package/git-credential-node)
+[![NPM downloads](https://img.shields.io/npm/dt/git-credential-node.svg)](https://npmjs.org/package/git-credential-node)
+
+
 ## Installation
 
 ```bash
@@ -275,7 +280,7 @@ function example() {
 
 I took inspiration and documentation from
 [git-credential-helper](https://github.com/nwinkler/git-credential-helper)
-[nwinkler](https://github.com/nwinkler) by
+by [nwinkler](https://github.com/nwinkler)
 
 ## License
 
