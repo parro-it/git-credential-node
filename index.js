@@ -16,15 +16,13 @@ function parse(result) {
 }
 
 function runSync(command, opts) {
-  // const result = spawnSync('git', ['credential', command], opts);
-  const result = spawnSync('git', ['--version'], opts);
+  const result = spawnSync('git', ['credential', command], opts);
   if (result.error) {
     throw result.error;
   }
   if (result.stderr) {
     throw new Error(result.stderr);
   }
-  console.log(result.stdout);
   return result.stdout;
 }
 
