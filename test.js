@@ -1,9 +1,9 @@
 'use strict';
 
-const gc = require('../es6');
+const gc = require('.');
 const co = require('co');
 const thenify = require('thenify');
-global.should = require('chai').should();
+const should = require('chai').should();
 
 const testWith = args => () => {
   const _fill = args._fill;

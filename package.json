@@ -7,14 +7,18 @@
   "engines": {
     "node": ">=5"
   },
-  "main": "dist/index.js",
   "author": "andrea@parro.it",
   "scripts": {
-    "test": "mocha test/*_test.js || echo failed",
+    "test": "eslint . && mocha test.js",
     "lint": "eslint ."
   },
+  "files": ["index.js"],
   "eslintConfig": {
-    "extends": "js"
+    "extends": "js",
+    "env": {
+        "mocha": true,
+        "node": true
+    }
   },
   "devDependencies": {
     "chai": "^2.2.0",
