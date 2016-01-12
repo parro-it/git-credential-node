@@ -24,7 +24,7 @@ function runSync(command, opts) {
   if (result.stderr) {
     throw new Error(result.stderr);
   }
-
+  console.log(result.stdout);
   return result.stdout;
 }
 
