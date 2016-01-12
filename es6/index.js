@@ -1,4 +1,6 @@
-import { spawnSync, execFile } from 'child_process';
+const cp = require('child_process');
+const spawnSync = cp.spawnSync;
+const execFile = cp.execFile;
 
 const credentialRE = /username=([^\n]+)\npassword=([^\n]+)\n/;
 
@@ -7,7 +9,8 @@ function parse(result) {
   if (!match) {
     return null;
   }
-  const [_, username, password] = match; // eslint-disable-line no-unused-vars
+  const username = match[1];
+  const password = match[2];
 
   return { username, password };
 }
@@ -51,7 +54,7 @@ function fillOpts(url) {
   };
 }
 
-export function fillSync(url) {
+exports.fillSync = function fillSync(url) {
   try {
     const result = runSync('fill', fillOpts(url));
     return parse(result);
@@ -61,11 +64,12 @@ export function fillSync(url) {
     }
     throw err;
   }
-}
+};
 
-export function fill(url, cb) {
+exports.fill = function fill(url, cb) {
   return new Promise( (resolve, rej) => {
     runAsync('fill', fillOpts(url), (err, result) => {
+
       if (err) {
         if (err.message.includes('terminal prompts disabled')) {
           if (cb) {
@@ -86,7 +90,7 @@ export function fill(url, cb) {
       }
     });
   });
-}
+};
 
 function rejectOpts(url) {
   return {
@@ -95,11 +99,11 @@ function rejectOpts(url) {
   };
 }
 
-export function rejectSync(url) {
+exports.rejectSync = function rejectSync(url) {
   runSync('reject', rejectOpts(url));
-}
+};
 
-export function reject(url, cb) {
+exports.reject = function reject(url, cb) {
   return new Promise( (resolve, rej) => {
     runAsync('reject', rejectOpts(url), err => {
       if (err) {
@@ -114,9 +118,13 @@ export function reject(url, cb) {
       }
     });
   });
-}
+};
 
-function approveOpts({ username, password, url }) {
+function approveOpts(args) {
+  const username = args.username;
+  const password = args.password;
+  const url = args.url;
+
   return {
     encoding: 'utf8',
     input: (url ? `url=${url}\n` : '') +
@@ -124,12 +132,18 @@ function approveOpts({ username, password, url }) {
   };
 }
 
-export function approveSync({ username, password, url }) {
+exports.approveSync = function approveSync(args) {
+  const username = args.username;
+  const password = args.password;
+  const url = args.url;
   runSync('approve', approveOpts({ username, password, url }));
-}
+};
 
 
-export function approve({ username, password, url }, cb) {
+exports.approve = function approve(args, cb) {
+  const username = args.username;
+  const password = args.password;
+  const url = args.url;
   return new Promise( (resolve, rej) => {
     runAsync('approve', approveOpts({ username, password, url }), err => {
       if (err) {
@@ -144,5 +158,5 @@ export function approve({ username, password, url }, cb) {
       }
     });
   });
-}
+};
 

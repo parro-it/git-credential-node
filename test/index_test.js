@@ -1,14 +1,15 @@
-let moduleRoot = '../es6';
-if (process.env.TEST_RELEASE) {
-  moduleRoot = '../dist';
-}
+'use strict';
 
-const { fill, approve, reject } = require(moduleRoot);
-const { fillSync, approveSync, rejectSync } = require(moduleRoot);
+const gc = require('../es6');
+const co = require('co');
+const thenify = require('thenify');
+global.should = require('chai').should();
 
-import thenify from 'thenify';
+const testWith = args => () => {
+  const _fill = args._fill;
+  const _approve = args._approve;
+  const _reject = args._reject;
 
-const testWith = ({ _fill, _approve, _reject }) => () => {
   const save = () => _approve({
     url: 'https://myg.itho.st',
     username: 'myusername',
@@ -18,15 +19,15 @@ const testWith = ({ _fill, _approve, _reject }) => () => {
   describe('approve', () => {
     let result;
 
-    after( async () => {
-      await _reject('https://myg.itho.st');
-    });
+    after(  () =>
+      _reject('https://myg.itho.st')
+    );
 
-    before( async () => {
-      await _reject('https://myg.itho.st');
-      await save();
-      result = await _fill('https://myg.itho.st');
-    });
+    before( co.wrap(function * () {
+      yield _reject('https://myg.itho.st');
+      yield save();
+      result = yield _fill('https://myg.itho.st');
+    }));
 
     it('store username', () => {
       result.username.should.be.equal('myusername');
@@ -41,11 +42,11 @@ const testWith = ({ _fill, _approve, _reject }) => () => {
   describe('reject', () => {
     let result;
 
-    before(async () => {
-      await save();
-      await _reject('https://myg.itho.st');
-      result = await _fill('https://myg.itho.st');
-    });
+    before(co.wrap(function * () {
+      yield save();
+      yield _reject('https://myg.itho.st');
+      result = yield _fill('https://myg.itho.st');
+    }));
 
     it('credentials are removed', () => {
       should.equal(result, null);
@@ -55,10 +56,10 @@ const testWith = ({ _fill, _approve, _reject }) => () => {
   describe('fill', () => {
     let result;
 
-    before(async () => {
-      await save();
-      result = await _fill('https://myg.itho.st');
-    });
+    before(co.wrap(function * () {
+      yield save();
+      result = yield _fill('https://myg.itho.st');
+    }));
 
     it('is defined', () => {
       _fill.should.be.a('function');
@@ -78,23 +79,23 @@ const testWith = ({ _fill, _approve, _reject }) => () => {
   });
 };
 
-describe('git-credential-sync', () => {
+describe('git-credential-node', () => {
   describe('sync', testWith({
-    _fill: fillSync,
-    _approve: approveSync,
-    _reject: rejectSync
+    _fill: args => Promise.resolve(gc.fillSync(args)),
+    _approve: args => Promise.resolve(gc.approveSync(args)),
+    _reject: args => Promise.resolve(gc.rejectSync(args))
   }));
 
   describe('async using promises', testWith({
-    _fill: fill,
-    _approve: approve,
-    _reject: reject
+    _fill: gc.fill,
+    _approve: gc.approve,
+    _reject: gc.reject
   }));
 
   describe('async using callbacks', testWith({
-    _fill: thenify(fill),
-    _approve: thenify(approve),
-    _reject: thenify(reject)
+    _fill: thenify(gc.fill),
+    _approve: thenify(gc.approve),
+    _reject: thenify(gc.reject)
   }));
 });
 

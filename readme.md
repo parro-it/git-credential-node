@@ -1,6 +1,7 @@
 # git-credential-node
 
-Node library that allows using the [Git credential API](http://git-scm.com/docs/git-credential).
+> Thin wrapper around `git credential` command
+> Allow you to use [Git credential API](http://git-scm.com/docs/git-credential) from node.
 
 ## Installation
 
