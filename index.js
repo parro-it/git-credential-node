@@ -17,7 +17,7 @@ function parse(result) {
 
 function runSync(command, opts) {
   // const result = spawnSync('git', ['credential', command], opts);
-const result = spawnSync('git', ['--version'], opts);
+  const result = spawnSync('git', ['--version'], opts);
   if (result.error) {
     throw result.error;
   }
