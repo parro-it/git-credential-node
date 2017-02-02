@@ -2,7 +2,7 @@
   "name": "git-credential-node",
   "description": "Thin wrapper around `git credential` command",
   "repository": "parro-it/git-credential-node",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "engines": {
     "node": ">=6"
