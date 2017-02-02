@@ -1,9 +1,4 @@
 language: node_js
 node_js:
   - 'stable'
-sudo: required
-before_install:
-	git --version
-  - sudo add-apt-repository -y ppa:git-core/ppa
-  - sudo apt-get update -y
-  - sudo apt-get install git -y
+
