@@ -22,6 +22,10 @@ function parse(result) {
 	const username = match[1];
 	const password = match[2];
 
+	if (username.startsWith('Username for ')) {
+		return null;
+	}
+
 	return {username, password};
 }
 
