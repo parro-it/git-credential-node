@@ -4,7 +4,6 @@ const {spawnSync, execFile} = require('child_process');
 const credentialRE = /username=([^\n]+)\npassword=([^\n]+)\n/;
 
 function parse(result) {
-	console.log({result})
 	const match = result.match(credentialRE);
 	if (!match) {
 		return null;
@@ -56,29 +55,21 @@ exports.fillSync = url => {
 		const result = runSync('fill', fillOpts(url));
 		return parse(result);
 	} catch (err) {
-		if (err.message.includes('terminal prompts disabled')) {
-			return null;
-		}
-		throw err;
+		return null;
 	}
 };
 
 exports.fill = (url, cb) => {
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		runAsync('fill', fillOpts(url), (err, result) => {
 			if (err) {
-				if (err.message.includes('terminal prompts disabled')) {
-					if (cb) {
-						cb(null, null);
-					}
-					return resolve(null);
+				if (cb) {
+					cb(null, null);
 				}
 
-				if (cb) {
-					cb(err);
-				}
-				return reject(err);
+				return resolve(null);
 			}
+
 			const ret = parse(result);
 			resolve(ret);
 			if (cb) {
