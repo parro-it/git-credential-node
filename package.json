@@ -5,28 +5,18 @@
   "version": "1.0.0",
   "license": "MIT",
   "engines": {
-    "node": ">=5"
+    "node": ">=6"
   },
-  "author": "andrea@parro.it",
+  "author": "Andrea Parodi <andrea@parro.it>",
   "scripts": {
-    "test": "eslint . && mocha test.js",
-    "lint": "eslint ."
+    "test": "ava && xo"
   },
-  "files": ["index.js"],
-  "eslintConfig": {
-    "extends": "js",
-    "env": {
-        "mocha": true,
-        "node": true
-    }
-  },
+  "files": [
+    "index.js"
+  ],
   "devDependencies": {
-    "chai": "^2.2.0",
-    "co": "^4.5.2",
-    "co-mocha": "^1.1.0",
-    "eslint-config-js": "^2.0.2",
-    "mocha": "^2.2.4",
-    "thenify": "^3.1.0",
-    "eslint": "^1.10.3"
+    "ava": "^0.17.0",
+    "pify": "^2.3.0",
+    "xo": "^0.17.1"
   }
 }
