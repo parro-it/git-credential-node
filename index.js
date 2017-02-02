@@ -4,6 +4,7 @@ const {spawnSync, execFile} = require('child_process');
 const credentialRE = /username=([^\n]+)\npassword=([^\n]+)\n/;
 
 function parse(result) {
+	console.log({result})
 	const match = result.match(credentialRE);
 	if (!match) {
 		return null;
