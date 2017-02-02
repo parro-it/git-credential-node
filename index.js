@@ -1,7 +1,18 @@
 'use strict';
-const {spawnSync, execFile} = require('child_process');
+const execa = require('execa');
 
 const credentialRE = /username=([^\n]+)\npassword=([^\n]+)\n/;
+
+function callbackOrPromise(cb, promise) {
+	if (cb) {
+		promise
+			.then(data => cb(null, data))
+			.catch(cb);
+		return null;
+	}
+
+	return promise;
+}
 
 function parse(result) {
 	const match = result.match(credentialRE);
@@ -14,135 +25,63 @@ function parse(result) {
 	return {username, password};
 }
 
-function runSync(command, opts) {
-	const result = spawnSync('git', ['credential', command], opts);
-	if (result.error) {
-		throw result.error;
-	}
-	if (result.stderr) {
-		throw new Error(result.stderr);
-	}
-	return result.stdout;
-}
-
-function runAsync(command, opts, cb) {
-	const proc = execFile('git', ['credential', command], opts, (err, stdout, stderr) => {
-		if (err) {
-			return cb(err);
-		}
-		if (stderr) {
-			return cb(new Error(stderr));
-		}
-
-		cb(null, stdout);
-	});
-
-	if (opts.input) {
-		proc.stdin.write(opts.input);
-	}
-}
-
-function fillOpts(url) {
-	return {
-		encoding: 'utf8',
-		input: url ? `url=${url}\n\n` : '\n',
-		env: Object.assign({GIT_TERMINAL_PROMPT: '0'}, process.env)
-	};
-}
+const fillOpts = url => ({
+	stripEof: false,
+	reject: false,
+	encoding: 'utf8',
+	input: url ? `url=${url}\n\n` : '\n',
+	env: Object.assign({GIT_TERMINAL_PROMPT: '0'}, process.env)
+});
 
 exports.fillSync = url => {
 	try {
-		const result = runSync('fill', fillOpts(url));
-		return parse(result);
+		const result = execa.sync('git', ['credential', 'fill'], fillOpts(url));
+		return parse(result.stdout);
 	} catch (err) {
 		return null;
 	}
 };
 
-exports.fill = (url, cb) => {
-	return new Promise(resolve => {
-		runAsync('fill', fillOpts(url), (err, result) => {
-			if (err) {
-				if (cb) {
-					cb(null, null);
-				}
-
-				return resolve(null);
+exports.fill = (url, cb) => callbackOrPromise(
+	cb,
+	execa('git', ['credential', 'fill'], fillOpts(url))
+		.then(({code, stdout}) => {
+			if (code !== 0) {
+				return null;
 			}
 
-			const ret = parse(result);
-			resolve(ret);
-			if (cb) {
-				cb(null, ret);
-			}
-		});
-	});
-};
+			return parse(stdout);
+		})
+);
 
-function rejectOpts(url) {
-	return {
-		encoding: 'utf8',
-		input: url ? `url=${url}\n\n` : '\n'
-	};
-}
+const rejectOpts = url => ({
+	stripEof: false,
+	encoding: 'utf8',
+	input: url ? `url=${url}\n\n` : '\n'
+});
 
 exports.rejectSync = url => {
-	runSync('reject', rejectOpts(url));
+	return execa.sync('git', ['credential', 'reject'], rejectOpts(url));
 };
 
-exports.reject = (url, cb) => {
-	return new Promise((resolve, reject) => {
-		runAsync('reject', rejectOpts(url), err => {
-			if (err) {
-				if (cb) {
-					cb(err);
-				}
-				return reject(err);
-			}
-			resolve(null);
-			if (cb) {
-				cb(null, null);
-			}
-		});
-	});
-};
+exports.reject = (url, cb) => callbackOrPromise(
+	cb,
+	execa('git', ['credential', 'reject'], rejectOpts(url))
+);
 
-function approveOpts(args) {
-	const username = args.username;
-	const password = args.password;
-	const url = args.url;
-
-	return {
-		encoding: 'utf8',
-		input: (url ? `url=${url}\n` : '') +
-			`username=${username}\npassword=${password}\n\n`
-	};
-}
+const approveOpts = ({username, password, url}) => ({
+	stripEof: false,
+	encoding: 'utf8',
+	input: (url ? `url=${url}\n` : '') +
+		`username=${username}\npassword=${password}\n\n`
+});
 
 exports.approveSync = args => {
-	const username = args.username;
-	const password = args.password;
-	const url = args.url;
-	runSync('approve', approveOpts({username, password, url}));
+	return execa.sync('git', ['credential', 'approve'], approveOpts(args));
 };
 
-exports.approve = (args, cb) => {
-	const username = args.username;
-	const password = args.password;
-	const url = args.url;
-	return new Promise((resolve, reject) => {
-		runAsync('approve', approveOpts({username, password, url}), err => {
-			if (err) {
-				if (cb) {
-					cb(err);
-				}
-				return reject(err);
-			}
-			resolve(null);
-			if (cb) {
-				cb(null, null);
-			}
-		});
-	});
-};
+exports.approve = (args, cb) => callbackOrPromise(
+	cb,
+	execa('git', ['credential', 'approve'], approveOpts(args))
+);
 

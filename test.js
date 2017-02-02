@@ -82,4 +82,3 @@ testWith({
 	_approve: pify(gc.approve),
 	_reject: pify(gc.reject)
 });
-
