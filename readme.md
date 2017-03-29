@@ -1,5 +1,7 @@
 # git-credential-node
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/parro-it/git-credential-node.svg)](https://greenkeeper.io/)
+
 > Thin wrapper around `git credential` command
 > Allow you to use [Git credential API](http://git-scm.com/docs/git-credential) from node.
 
