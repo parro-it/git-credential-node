@@ -33,7 +33,7 @@ const testWith = ({_fill, _approve, _reject, prefix, idxGroup}) => {
 		await _reject('https://myg.itho.st' + (idxGroup + 3));
 	});
 
-	test(prefix + ' fill - is defined', async t => {
+	test(prefix + ' fill - is defined', t => {
 		t.is(typeof _fill, 'function');
 	});
 
