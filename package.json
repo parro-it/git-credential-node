@@ -17,7 +17,7 @@
   "devDependencies": {
     "ava": "^0.24.0",
     "pify": "^2.3.0",
-    "xo": "^0.18.1"
+    "xo": "^0.30.0"
   },
   "dependencies": {
     "execa": "^0.8.0"
